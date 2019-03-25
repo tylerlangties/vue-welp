@@ -14,7 +14,7 @@ describe('StoreCard.vue', () => {
     const mockRestaurant = {
       id: 8419988,
       rating: 3,
-      img: '',
+      img: 'unreal.jpg',
       title: 'mock restuarant',
       description: 'Italian',
       location: 'mock st',
@@ -35,6 +35,8 @@ describe('StoreCard.vue', () => {
     })
 
     expect(wrapper.find('.rest-title').text()).toBe('mock restuarant')
+    expect(wrapper.find('.stars').attributes('rating')).toBe('3')
+    expect(wrapper.find('.rest-img').attributes('src')).toBe('unreal.jpg')
     expect(wrapper.find('.rest-phone').text()).toBe('123456')
     expect(wrapper.find('.rest-location').text()).toBe('mock st')
     expect(wrapper.find('.rest-price').text()).toBe('$')
