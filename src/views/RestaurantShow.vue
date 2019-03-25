@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{restaurant.title}}</h1>
+    <h1 class="restaurant-title">{{restaurant.title}}</h1>
     <star-rating
       class="stars"
       :read-only="true"
@@ -13,8 +13,14 @@
     </div>
 
     <b-container class="restaurant-info">
-      <h5>Phone: {{restaurant.phone}}</h5>
-      <h5>Address: {{restaurant.location}}</h5>
+      <h5>
+        Phone:
+        <span class="restaurant-phone">{{restaurant.phone}}</span>
+      </h5>
+      <h5>
+        Address:
+        <span class="restaurant-address">{{restaurant.location}}</span>
+      </h5>
     </b-container>
 
     <br>
