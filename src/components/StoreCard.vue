@@ -4,7 +4,7 @@
       <b-row no-gutters>
         <b-col md="6">
           <router-link class :to="{ name: 'restaurant-show', params: { id: rest.id }  }">
-            <b-card-img :src="rest.img" class="rounded-0"/>
+            <b-card-img :src="rest.img" class="rounded-0 rest-img"/>
           </router-link>
         </b-col>
         <b-col md="6" class="right">
@@ -14,7 +14,13 @@
                 <h4 class="rest-title">{{rest.title}}</h4>
               </router-link>
 
-              <star-rating :read-only="true" :star-size="25" :rating="rest.rating" :increment="0.1"></star-rating>
+              <star-rating
+                class="stars"
+                :read-only="true"
+                :star-size="25"
+                :rating="rest.rating"
+                :increment="0.1"
+              ></star-rating>
             </div>
             <div class="text-right">
               <span class="rest-phone">{{rest.phone}}</span>
