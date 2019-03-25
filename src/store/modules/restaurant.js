@@ -47,7 +47,7 @@ export const actions = {
         )
         commit('SET_RESTAURANT', response.data)
       } catch (e) {
-        throw Error('Api Error occurred.')
+        throw Error('API Error occurred.')
       }
     }
   },
@@ -57,7 +57,6 @@ export const actions = {
     await axios.delete('http://localhost:3000/restaurants/' + id)
     commit('ADD_REVIEW', review)
     dispatch('updateRating')
-
     return axios.post('http://localhost:3000/restaurants', newRest)
   },
 

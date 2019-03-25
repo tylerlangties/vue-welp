@@ -1,5 +1,6 @@
 import { actions } from '../restaurant'
 import mockAxios from 'axios'
+import axios from '../../../../__mocks__/axios'
 
 const {
   fetchRestaurants,
@@ -45,6 +46,23 @@ describe('fetchRestaurants', () => {
       }
     ])
   })
+
+  it('throws error an error', async () => {
+    let mockError = true
+    axios.get.mockImplementationOnce(() => {
+      return new Promise(resolve => {
+        if (mockError) throw Error()
+
+        resolve(true)
+      })
+    })
+    const state = {
+      restaurants: []
+    }
+    await expect(fetchRestaurants({ commit, state })).rejects.toThrow(
+      'API Error occurred.'
+    )
+  })
 })
 // Fetch single restaurant action
 describe('fetchRestaurant', () => {
@@ -76,6 +94,21 @@ describe('fetchRestaurant', () => {
       restaurants: id
     })
   })
+
+  it('throws error an error', async () => {
+    let mockError = true
+    axios.get.mockImplementationOnce(() => {
+      return new Promise(resolve => {
+        if (mockError) throw Error()
+
+        resolve(true)
+      })
+    })
+
+    await expect(fetchRestaurant({ commit, getters })).rejects.toThrow(
+      'API Error occurred.'
+    )
+  })
 })
 
 //Create review action
@@ -105,32 +138,32 @@ describe('createReview', () => {
       review: 'review'
     })
   })
+})
 
-  describe('updateRating', () => {
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-    const state = {
-      restaurant: {
-        id: 8419988,
-        rating: 4,
+describe('updateRating', () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+  const state = {
+    restaurant: {
+      id: 8419988,
+      rating: 4,
 
-        reviews: [
-          {
-            user: 'Karen',
-            rating: 2
-          },
-          {
-            user: 'Jimbo',
-            rating: 4
-          }
-        ]
-      }
+      reviews: [
+        {
+          user: 'Karen',
+          rating: 2
+        },
+        {
+          user: 'Jimbo',
+          rating: 4
+        }
+      ]
     }
+  }
 
-    it('updates the current rating and writes it to the state', async () => {
-      updateRating({ state, commit })
-      expect(commit).toBeCalledWith('UPDATE_STAR_RATING', 3)
-    })
+  it('updates the current rating and writes it to the state', async () => {
+    updateRating({ state, commit })
+    expect(commit).toBeCalledWith('UPDATE_STAR_RATING', 3)
   })
 })
