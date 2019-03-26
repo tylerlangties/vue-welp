@@ -1,65 +1,71 @@
 <template>
   <div>
     <!-- Modal Button -->
-    <b-button v-b-modal.modal variant="danger">Leave a review!</b-button>
+    <b-button class="modalToggle" v-on:click="showModal" variant="danger">Leave a review!</b-button>
 
     <!-- Modal Component -->
     <b-modal ref="formModalRef" id="modal" title="Review">
-      <b-form @submit.prevent="createReview" class="text-left">
-        <b-form-group class="star-rating">
-          <p>Select your rating:</p>
-          <star-rating v-model="review.rating" :increment="0.25" :star-size="25"></star-rating>
-        </b-form-group>
+      <form @submit.prevent="createReview">
+        <p class="rating-select">Select your rating:</p>
+        <star-rating v-model="review.rating" :increment="0.5" :star-size="25"></star-rating>
 
-        <b-form-group id="nameGroup" label="Your Name:" label-for="nameGroup">
-          <b-form-input
+        <div class="field">
+          <label>Name</label>
+          <input
+            data-username
             v-model="review.user"
             :class="{ error: $v.review.user.$error}"
             type="text"
             placeholder="Enter name"
             @blur="$v.review.user.$touch()"
-          />
-        </b-form-group>
+          >
+        </div>
         <template v-if="$v.review.user.$error">
           <p v-if="!$v.review.user.required" class="errorMessage">Name is required.</p>
         </template>
 
-        <b-form-group id="titleGroup" label="Title:" label-for="titleGroup">
-          <b-form-input
+        <div class="field">
+          <label>Title</label>
+          <input
+            id="title"
+            data-title
             v-model="review.title"
             :class="{ error: $v.review.title.$error}"
             type="text"
             placeholder="Enter Title"
             @blur="$v.review.title.$touch()"
-          />
-        </b-form-group>
+          >
+        </div>
         <template v-if="$v.review.title.$error">
           <p v-if="!$v.review.title.required" class="errorMessage">Title is required.</p>
         </template>
 
-        <b-form-group id="reviewGroup" label="Review:">
-          <b-form-textarea
+        <div class="field">
+          <label>Review</label>
+          <textarea
+            data-review
+            id="review"
             v-model="review.review"
             :class="{ error: $v.review.review.$error}"
             placeholder="How was your experience?"
             rows="5"
-            max-rows="6"
             @blur="$v.review.review.$touch()"
-          />
-        </b-form-group>
+          ></textarea>
+        </div>
         <template v-if="$v.review.review.$error">
           <p v-if="!$v.review.review.required" class="errorMessage">Your review is required.</p>
         </template>
 
-        <b-form-group>
+        <div>
           <b-button
+            class="submitButton"
             :disabled="$v.$anyError"
             type="submit"
             variant="danger"
-            v-on="{ click: !$v.$invalid ? hideModal : null }"
+            v-on="{ click: !$v.$invalid ? hideModal : invalid }"
           >Submit</b-button>
-        </b-form-group>
-      </b-form>
+        </div>
+      </form>
 
       <div slot="modal-footer" class="w-100"></div>
     </b-modal>
@@ -98,17 +104,22 @@ export default {
           .then(() => {
             this.review = this.createFreshFormObject()
           })
-          .catch(error => {
-            console.log(error)
-          })
+      } else {
+        return null
       }
+    },
+    showModal() {
+      this.$refs.formModalRef.show()
     },
     hideModal() {
       this.$refs.formModalRef.hide()
     },
+    invalid() {
+      return null
+    },
     createFreshFormObject() {
       // const id = Math.floor(Math.random() * 10000000)
-      const date = new Date()
+      const date = new Date().toLocaleString()
       return {
         rating: 1,
         user: '',
@@ -131,11 +142,50 @@ export default {
     margin-bottom: 8px;
   }
 }
+.rating-select {
+  text-align: left;
+  font-weight: 600;
+}
 .error {
   border: 1px solid red;
 }
 .errorMessage {
   color: red;
+}
+.field {
+  margin: 0.5rem 0;
+}
+label,
+input,
+select,
+textarea {
+  display: inline-flex;
+  font-size: 100%;
+  margin: 0;
+}
+label {
+  font-weight: 600;
+  width: 100%;
+  text-align: left;
+}
+input,
+textarea {
+  box-sizing: border-box;
+  border: solid 1px rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+}
+textarea {
+  width: 100%;
+  overflow: auto;
+  padding: 10px 10px;
+}
+[type='text'],
+[type='number'],
+[type='search'],
+[type='password'] {
+  height: 36px;
+  width: 100%;
+  padding: 0 10px;
 }
 </style>
 
