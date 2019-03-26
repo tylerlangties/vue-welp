@@ -10,12 +10,19 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     '**/*.{js,vue}',
+    '!**/src/store/store.js',
+    '!**/src/App.vue',
+    '!**/src/main.js',
+    '!**/src/router.js',
     '!**/node_modules/**',
     '!**/vue.config.js',
     '!**/jest.config.js',
     '!**/babel.config.js',
     '!**/postcss.config.js',
-    '!**/coverage/**'
+    '!**/tests/unit/**',
+    '!**/coverage/**',
+    '!<rootDir>/.eslintrc.js',
+    '!<rootDir>/.prettierrc.js'
   ],
   coverageReporters: ['html', 'text-summary'],
   moduleNameMapper: {
