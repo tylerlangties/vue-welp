@@ -68,7 +68,6 @@ export const actions = {
       starSum += rating.rating
     })
     let ratingAverage = starSum / reviews.length
-    console.log(ratingAverage)
     commit('UPDATE_STAR_RATING', ratingAverage)
   }
 }

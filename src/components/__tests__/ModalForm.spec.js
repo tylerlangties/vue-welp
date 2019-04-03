@@ -17,9 +17,7 @@ describe('ModalForm.vue', () => {
       user: '',
       title: '',
       review: '',
-      date: new Date().toLocaleString(),
-      avatar:
-        'https://kooledge.com/assets/default_medium_avatar-57d58da4fc778fbd688dcbc4cbc47e14ac79839a9801187e42a796cbd6569847.png'
+      date: new Date().toLocaleString()
     }
 
     const wrapper = shallowMount(ModalForm, { localVue })
@@ -43,8 +41,6 @@ describe('ModalForm.vue', () => {
 
     wrapper.setMethods({ invalid: jest.fn() })
     wrapper.find('.submitButton').trigger('click')
-    // wrapper.vm.$forceUpdate()
-    // expect(wrapper.vm.$v.$error).toBe(true)
     expect(wrapper.vm.invalid).toHaveBeenCalledTimes(1)
   })
 
@@ -53,7 +49,7 @@ describe('ModalForm.vue', () => {
     expect(wrapper.vm.$v).toBeTruthy
     console.log(wrapper.vm.$v)
   })
-  it('should dispatch createReview action if valid', () => {
+  it('should be valid when fields are filled', () => {
     const actions = {
       createReview: jest.fn()
     }
@@ -76,9 +72,9 @@ describe('ModalForm.vue', () => {
     review.setValue('some value')
 
     wrapper.vm.$forceUpdate()
-    console.log(wrapper.vm.$v.$invalid)
     wrapper.vm.createReview()
     wrapper.vm.hideModal()
+    expect(wrapper.vm.$v.$invalid).toBe(false)
   })
   it('returns null when invalid', () => {
     const wrapper = mount(ModalForm, { localVue })
