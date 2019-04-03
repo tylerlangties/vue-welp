@@ -1,5 +1,5 @@
-const mockAxios = {
-  get: jest.fn(() => ({ data: { restaurants: 'restaurants' } }))
+export default {
+  get: jest.fn(() => ({ data: { restaurants: 'restaurants' } })),
+  post: jest.fn(),
+  delete: jest.fn()
 }
-
-export default mockAxios

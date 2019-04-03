@@ -1,8 +1,15 @@
 import { actions } from '../restaurant'
 import mockAxios from 'axios'
+import axios from '../../../../__mocks__/axios'
 
-const { fetchRestaurants, fetchRestaurant } = actions
+const {
+  fetchRestaurants,
+  fetchRestaurant,
+  createReview,
+  updateRating
+} = actions
 
+const dispatch = jest.fn()
 const commit = jest.fn()
 const getters = {
   getRestaurantById: jest.fn()
@@ -39,6 +46,23 @@ describe('fetchRestaurants', () => {
       }
     ])
   })
+
+  it('throws error an error', async () => {
+    let mockError = true
+    axios.get.mockImplementationOnce(() => {
+      return new Promise(resolve => {
+        if (mockError) throw Error()
+
+        resolve(true)
+      })
+    })
+    const state = {
+      restaurants: []
+    }
+    await expect(fetchRestaurants({ commit, state })).rejects.toThrow(
+      'API Error occurred.'
+    )
+  })
 })
 // Fetch single restaurant action
 describe('fetchRestaurant', () => {
@@ -69,5 +93,77 @@ describe('fetchRestaurant', () => {
     expect(commit).toHaveBeenCalledWith('SET_RESTAURANT', {
       restaurants: id
     })
+  })
+
+  it('throws error an error', async () => {
+    let mockError = true
+    axios.get.mockImplementationOnce(() => {
+      return new Promise(resolve => {
+        if (mockError) throw Error()
+
+        resolve(true)
+      })
+    })
+
+    await expect(fetchRestaurant({ commit, getters })).rejects.toThrow(
+      'API Error occurred.'
+    )
+  })
+})
+
+//Create review action
+describe('createReview', () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+  const review = {
+    review: 'review'
+  }
+  const id = '123'
+
+  it('calls axios to delete old data from api', async () => {
+    await createReview({ commit, getters, dispatch }, [review, id])
+    expect(mockAxios.delete).toHaveBeenCalledTimes(1)
+    expect(dispatch).toHaveBeenCalledWith('updateRating')
+    expect(commit).toHaveBeenCalledWith('ADD_REVIEW', {
+      review: 'review'
+    })
+  })
+
+  it('calls axios to post new data to api', async () => {
+    await createReview({ commit, getters, dispatch }, [review, id])
+    expect(mockAxios.post).toHaveBeenCalledTimes(1)
+    expect(dispatch).toHaveBeenCalledWith('updateRating')
+    expect(commit).toHaveBeenCalledWith('ADD_REVIEW', {
+      review: 'review'
+    })
+  })
+})
+
+describe('updateRating', () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
+  const state = {
+    restaurant: {
+      id: 8419988,
+      rating: 4,
+
+      reviews: [
+        {
+          user: 'Karen',
+          rating: 2
+        },
+        {
+          user: 'Jimbo',
+          rating: 4
+        }
+      ]
+    }
+  }
+
+  it('updates the current rating and writes it to the state', async () => {
+    updateRating({ state, commit })
+    expect(commit).toBeCalledWith('UPDATE_STAR_RATING', 3)
   })
 })
