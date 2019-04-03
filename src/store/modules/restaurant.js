@@ -1,4 +1,3 @@
-// import EventService from '@/services/EventService.js'
 import axios from 'axios'
 
 export const namespaced = true
