@@ -22,7 +22,6 @@ describe('SET_RESTAURANTS', () => {
     }
 
     SET_RESTAURANTS(state, restaurantsArray)
-
     expect(state.restaurants.length).toEqual(restaurantsArray.length)
   })
 })
@@ -38,7 +37,6 @@ describe('SET_RESTAURANT', () => {
     }
 
     SET_RESTAURANT(state, restaurantObject)
-
     expect(state).toEqual({
       restaurant: {
         title: 'Mock Restaurant'

@@ -47,7 +47,6 @@ describe('ModalForm.vue', () => {
   it('Vuelidate - validator should be loaded', () => {
     const wrapper = mount(ModalForm, { localVue })
     expect(wrapper.vm.$v).toBeTruthy
-    console.log(wrapper.vm.$v)
   })
   it('should be valid when fields are filled', () => {
     const actions = {

@@ -63,8 +63,8 @@ export const actions = {
     const reviews = state.restaurant.reviews
 
     let starSum = 0
-    reviews.forEach(rating => {
-      starSum += rating.rating
+    reviews.forEach(review => {
+      starSum += review.rating
     })
     let ratingAverage = starSum / reviews.length
     commit('UPDATE_STAR_RATING', ratingAverage)
