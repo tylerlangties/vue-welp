@@ -4,10 +4,6 @@
   </b-jumbotron>
 </template>
 
-<script>
-export default {}
-</script>
-
 <style lang="scss" scoped>
 .jumbotron {
   padding-top: 2rem !important;
